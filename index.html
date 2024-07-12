@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="search">
+        <input type="text" placeholder="Enter your city name" />
+        <button>
+          <img src="./images/search.png" srcset="" />
+        </button>
+      </div>
+
+      <div class="weather">
+        <img class="weather_icon" src="./images/clear.png" />
+        <h1 class="temp">22°C</h1>
+        <h2 class="city">Cairo</h2>
+      </div>
+
+      <div class="deatils">
+        <div class="col">
+          <img
+            class="humidity-icon"
+            src="./images/humidity.png"
+            alt=""
+            srcset=""
+          />
+          <div>
+            <p class="humidity-num">50%</p>
+            <p>Humidity</p>
+          </div>
+        </div>
+
+        <div class="col">
+          <img class="Wind-icon" src="./images/wind.png" alt="" srcset="" />
+          <div>
+            <p class="Wind-num">40Km/h</p>
+            <p>Wind Speed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const apiKey = "5c633b656b238dee4f9321c4c280f1cc";
+      const apiUrl =
+        "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
+      const sizeBox_btn = document.querySelector(".search button");
+      const sizeBox_text = document.querySelector(".search input");
+      const weather_Icon = document.querySelector(".weather_icon");
+
+      async function ceakWeather(city) {
+        const response = await fetch(apiUrl + city+`&appid=${apiKey}`);
+        var data = await response.json();
+
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML =
+          Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity-num").innerHTML =
+          data.main.humidity + "%";
+        document.querySelector(".Wind-num").innerHTML = data.wind.speed + "Km";
+
+        if (data.weather[0].main == "Clear") {
+          weather_Icon.src = "./images/clear.png";
+        } else if (data.weather[0].main == "Clouds") {
+          weather_Icon.src = "./images/clouds.png";
+        } else if (data.weather[0].main == "Rain") {
+          weather_Icon.src = "./images/rain.png";
+        } else if (data.weather[0].main == "Drizzle") {
+          weather_Icon.src = "./images/drizzle.png";
+        } else if (data.weather[0].main == "Mist") {
+          weather_Icon.src = "./images/mist.png";
+        } else if (data.weather[0].main == "Sonw") {
+          weather_Icon.src = "./images/snow.png";
+        }
+
+        console.log(data);
+      }
+
+      sizeBox_btn.addEventListener("click", () => {
+        ceakWeather(sizeBox_text.value);
+      });
+
+      //https://api.openweathermap.org/data/2.5/weather?q=cairo&appid=5c633b656b238dee4f9321c4c280f1cc&units=metric#
+    </script>
+  </body>
+</html>
